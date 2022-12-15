@@ -1,7 +1,7 @@
 @import "../../../shared/styles/breakpoints.scss";
 
 .main-content {
-  margin: 0 auto;
+  margin: 2rem auto;
   @include md-min {
     width: 50em;
   }

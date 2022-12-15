@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -48,6 +49,7 @@ import { FilterComponent } from './home/ui/filter/filter.component';
     MatNativeDateModule,
     MatTableModule,
     MatSortModule,
+    MatSlideToggleModule,
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],

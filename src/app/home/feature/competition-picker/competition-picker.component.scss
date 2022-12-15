@@ -1,3 +1,6 @@
-.competition-field button:disabled {
-  visibility: hidden;
+.filter__competition-picker {
+  width: 100%;
+  button:disabled {
+    visibility: hidden;
+  }
 }
