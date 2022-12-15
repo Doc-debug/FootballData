@@ -40,16 +40,12 @@
       *matHeaderCellDef
       mat-sort-header
       sortActionDescription="Sort by kickOff"
+      [start]="'asc'"
     >
       Kick-Off
     </th>
     <td mat-cell *matCellDef="let match">
-      {{
-        stringToDate(match.utcDate).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit"
-        })
-      }}
+      {{ formatDate(match.utcDate) }}
     </td>
   </ng-container>
 

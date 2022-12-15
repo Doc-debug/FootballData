@@ -6,7 +6,7 @@ import {
   Score,
 } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
-import { stringToDate } from '../../../shared/utils/timeUtils';
+import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
 import { DateRange } from '../date-picker/date-picker.model';
 
@@ -18,13 +18,12 @@ import { DateRange } from '../date-picker/date-picker.model';
 export class MatchTableComponent implements OnChanges {
   @Input() matchday: DateRange;
   @Input() competition: Competition;
+
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
   matches?: Match[];
   unsortedMatches?: Match[];
-
   noDataError: boolean = false;
-
-  stringToDate = stringToDate;
+  showMultipleDates: boolean = false;
 
   constructor(private footballData: FootballDataService) {}
 
@@ -42,6 +41,11 @@ export class MatchTableComponent implements OnChanges {
         if (data.matches.length > 0) {
           this.matches = data.matches;
           this.unsortedMatches = data.matches;
+          console.log(
+            dateDifference(this.matchday.start, this.matchday.end, 'days')
+          );
+          this.showMultipleDates =
+            dateDifference(this.matchday.start, this.matchday.end, 'days') > 0;
         } else {
           this.matches = undefined;
           this.noDataError = true;
@@ -49,16 +53,10 @@ export class MatchTableComponent implements OnChanges {
       });
   }
 
-  formatScore(score: Score): string {
-    if (isAnyNull(score.away, score.home)) {
-      return `- : -`;
-    }
-    return `${score.home} : ${score.away}`;
-  }
-
   sortData(sort: Sort) {
     const data = this.matches?.slice();
     if (!data || !sort.active || sort.direction === '') {
+      this.matches = this.unsortedMatches;
       return;
     }
 
@@ -77,5 +75,29 @@ export class MatchTableComponent implements OnChanges {
           return 0;
       }
     });
+  }
+
+  formatScore(score: Score): string {
+    if (isAnyNull(score.away, score.home)) {
+      return `- : -`;
+    }
+    return `${score.home} : ${score.away}`;
+  }
+
+  formatDate(dateString: string): string {
+    const date = stringToDate(dateString);
+    if (this.showMultipleDates) {
+      return date.toLocaleString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: 'short',
+      });
+    } else {
+      return date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
   }
 }
