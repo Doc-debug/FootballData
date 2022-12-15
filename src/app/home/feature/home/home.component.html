@@ -1,0 +1,7 @@
+<main class="main-content">
+  <home-filter (onFilterDataComplete)="onFilterData($event)"></home-filter>
+  <home-match-table
+    [matchday]="matchday"
+    [competition]="competition"
+  ></home-match-table>
+</main>

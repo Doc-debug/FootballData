@@ -1,0 +1,32 @@
+<mat-form-field appearance="fill" class="competition-field">
+  <mat-label>Competition</mat-label>
+  <input
+    #competitionInput
+    type="text"
+    placeholder="Pick a competition"
+    aria-label="Competition"
+    matInput
+    [formControl]="competitionForm"
+    [matAutocomplete]="auto"
+  />
+  <button
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    [disabled]="!competitionInput.value"
+    (click)="clearInput()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selectCompetition($event.option.value)"
+  >
+    <mat-option
+      *ngFor="let competition of filteredCompetitions | async"
+      [value]="competition.name"
+    >
+      {{ competition.name }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
