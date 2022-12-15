@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
 import { Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import {
   Competition,
   Match,
@@ -32,7 +33,10 @@ export class MatchTableComponent implements OnChanges {
   };
   showMultipleDates: boolean = false;
 
-  constructor(private footballData: FootballDataService) {}
+  constructor(
+    private footballData: FootballDataService,
+    private router: Router
+  ) {}
 
   ngOnChanges(): void {
     if (this.matchday && this.competition) {
@@ -118,6 +122,10 @@ export class MatchTableComponent implements OnChanges {
         minute: '2-digit',
       });
     }
+  }
+
+  navigateTo(match: Match) {
+    this.router.navigate(['/match/' + match.id]);
   }
 
   setError(

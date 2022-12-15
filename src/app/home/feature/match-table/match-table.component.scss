@@ -1,3 +1,12 @@
+@use '@angular/material' as mat;
+
+$palette: mat.define-palette(mat.$pink-palette);
+
+.match-table tr.match-table__row:hover {
+  cursor: pointer;
+  background-color: mat.get-color-from-palette($palette, 900);
+}
+
 .match-table__loading-spinner {
   display: flex;
   flex-direction: column;

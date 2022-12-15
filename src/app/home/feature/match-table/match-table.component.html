@@ -1,4 +1,5 @@
 <table
+  class="match-table"
   mat-table
   [dataSource]="matches"
   matSort
@@ -49,7 +50,12 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  <tr
+    mat-row
+    class="match-table__row"
+    *matRowDef="let match; columns: displayedColumns"
+    (click)="navigateTo(match)"
+  ></tr>
 </table>
 
 <div class="match-table__loading-spinner" *ngIf="loadingData">
