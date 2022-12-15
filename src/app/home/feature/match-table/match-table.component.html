@@ -2,7 +2,7 @@
   mat-table
   [dataSource]="matches"
   matSort
-  *ngIf="matches"
+  *ngIf="matches && !loadingData"
   (matSortChange)="sortData($event)"
 >
   <ng-container matColumnDef="homeTeam">
@@ -51,6 +51,11 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>
+
+<div class="match-table__loading-spinner" *ngIf="loadingData">
+  <mat-spinner [diameter]="50"></mat-spinner>
+  Loading Data
+</div>
 
 <div *ngIf="noDataError">
   There seems to be no data for {{ competition.name }} between

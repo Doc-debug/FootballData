@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -50,6 +51,7 @@ import { FilterComponent } from './home/ui/filter/filter.component';
     MatTableModule,
     MatSortModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],

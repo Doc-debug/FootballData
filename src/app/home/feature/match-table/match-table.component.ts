@@ -22,6 +22,7 @@ export class MatchTableComponent implements OnChanges {
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
   matches?: Match[];
   unsortedMatches?: Match[];
+  loadingData: boolean = false;
   noDataError: boolean = false;
   showMultipleDates: boolean = false;
 
@@ -35,21 +36,20 @@ export class MatchTableComponent implements OnChanges {
 
   updateData(): void {
     this.noDataError = false;
+    this.loadingData = true;
     this.footballData
       .getMatches(this.competition.id, this.matchday.start, this.matchday.end)
       .subscribe((data) => {
         if (data.matches.length > 0) {
           this.matches = data.matches;
           this.unsortedMatches = data.matches;
-          console.log(
-            dateDifference(this.matchday.start, this.matchday.end, 'days')
-          );
           this.showMultipleDates =
             dateDifference(this.matchday.start, this.matchday.end, 'days') > 0;
         } else {
           this.matches = undefined;
           this.noDataError = true;
         }
+        this.loadingData = false;
       });
   }
 
