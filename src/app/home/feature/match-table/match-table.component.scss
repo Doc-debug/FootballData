@@ -14,9 +14,3 @@ $palette: mat.define-palette(mat.$pink-palette);
   row-gap: 1rem;
 }
 
-.match-table__error-message {
-  mat-card-header mat-icon {
-    border-radius: 0;
-    font-size: 40px;
-  }
-}

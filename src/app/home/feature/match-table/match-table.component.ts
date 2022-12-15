@@ -8,6 +8,11 @@ import {
   Score,
 } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
+import {
+  createError,
+  createErrorFromHttp,
+  ErrorObject,
+} from '../../../shared/ui/error-card/error-card.model';
 import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
 import { DateRange } from '../date-picker/date-picker.model';
@@ -25,12 +30,7 @@ export class MatchTableComponent implements OnChanges {
   matches?: Match[];
   unsortedMatches?: Match[];
   loadingData: boolean = false;
-  error?: {
-    text: string;
-    type: string;
-    title?: string;
-    retry?: boolean;
-  };
+  error?: ErrorObject;
   showMultipleDates: boolean = false;
 
   constructor(
@@ -46,7 +46,7 @@ export class MatchTableComponent implements OnChanges {
 
   updateData(): void {
     if (!this.competition || !this.matchday) {
-      this.setError('No Data provided', 'error');
+      this.error = createError('No Data provided', 'error');
       return;
     }
     this.clearError();
@@ -63,14 +63,14 @@ export class MatchTableComponent implements OnChanges {
               0;
           } else {
             this.matches = undefined;
-            this.setErrorNoData();
+            this.error = this.createErrorNoData();
           }
           this.loadingData = false;
         },
         error: (error: HttpErrorResponse) => {
           this.matches = undefined;
           this.loadingData = false;
-          this.setErrorWithObj(error);
+          this.error = createErrorFromHttp(error);
         },
       });
   }
@@ -124,39 +124,21 @@ export class MatchTableComponent implements OnChanges {
     }
   }
 
-  navigateTo(match: Match) {
-    this.router.navigate(['/match/' + match.id]);
-  }
-
-  setError(
-    text: string,
-    type: string,
-    title: string = 'warning',
-    retry: boolean = false
-  ) {
-    this.error = { text, type, title, retry };
-  }
-
-  setErrorWithObj(error: HttpErrorResponse) {
-    this.setError(
-      error.error.message,
-      'error',
-      `${error.statusText} - ${error.status}`,
-      error.status === 429
-    );
-  }
-
-  setErrorNoData() {
-    this.setError(
-      `No data for ${
-        this.competition.name
-      } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
-      'info',
-      'No data found'
-    );
-  }
-
   clearError() {
     this.error = undefined;
+  }
+
+  createErrorNoData() {
+    return {
+      text: `No data for ${
+        this.competition.name
+      } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
+      type: 'info',
+      title: 'No data found',
+    };
+  }
+
+  navigateTo(match: Match) {
+    this.router.navigate(['/match/' + match.id]);
   }
 }
