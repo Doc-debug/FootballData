@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import {
@@ -58,25 +59,14 @@ export class MatchTableComponent implements OnChanges {
               0;
           } else {
             this.matches = undefined;
-            this.setError(
-              `No data for ${
-                this.competition.name
-              } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
-              'info',
-              "No data found"
-            );
+            this.setErrorNoData();
           }
           this.loadingData = false;
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           this.matches = undefined;
           this.loadingData = false;
-          this.setError(
-            error.error.message,
-            'error',
-            `${error.statusText} - ${error.status}`,
-            error.status === 429
-          );
+          this.setErrorWithObj(error);
         },
       });
   }
@@ -137,6 +127,25 @@ export class MatchTableComponent implements OnChanges {
     retry: boolean = false
   ) {
     this.error = { text, type, title, retry };
+  }
+
+  setErrorWithObj(error: HttpErrorResponse) {
+    this.setError(
+      error.error.message,
+      'error',
+      `${error.statusText} - ${error.status}`,
+      error.status === 429
+    );
+  }
+
+  setErrorNoData() {
+    this.setError(
+      `No data for ${
+        this.competition.name
+      } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
+      'info',
+      'No data found'
+    );
   }
 
   clearError() {
