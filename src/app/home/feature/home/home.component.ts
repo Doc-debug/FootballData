@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Competition } from '../../../shared/data-access/football-data.model';
 import { FilterData } from '../../ui/filter/filter.model';
+import { DateRange } from '../date-picker/date-picker.model';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { FilterData } from '../../ui/filter/filter.model';
 })
 export class HomeComponent {
   selectedCompetition: string = '';
-  matchday: Date;
+  matchday: DateRange;
   competition: Competition;
 
   constructor() {}
@@ -17,6 +18,5 @@ export class HomeComponent {
   onFilterData(filterData: FilterData) {
     this.matchday = filterData.matchday;
     this.competition = filterData.competition;
-    console.log('new data', this.matchday.getDate(), this.competition.name);
   }
 }

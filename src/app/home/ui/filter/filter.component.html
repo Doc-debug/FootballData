@@ -1,6 +1,24 @@
-<home-competition-picker
-  (competitionChanged)="updateData({ competition: $event })"
-></home-competition-picker>
-<home-date-picker
-  (dateChanged)="updateData({ matchday: $event })"
-></home-date-picker>
+<mat-slide-toggle class="filter__auto-update" [(ngModel)]="autoUpdate">
+  Auto update
+</mat-slide-toggle>
+
+<div class="filter__inputs">
+  <home-competition-picker
+    (competitionChanged)="autoUpdateData({ competition: $event })"
+  ></home-competition-picker>
+  <home-date-picker
+    (dateChanged)="autoUpdateData({ matchday: $event })"
+  ></home-date-picker>
+</div>
+
+<div *ngIf="!autoUpdate" class="filter__search-button-container">
+  <button
+    mat-flat-button
+    (click)="updateData()"
+    color="primary"
+    [disabled]="!matchday || !competition"
+  >
+    <mat-icon>search</mat-icon>
+    search
+  </button>
+</div>

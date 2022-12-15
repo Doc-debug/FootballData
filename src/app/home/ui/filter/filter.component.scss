@@ -1,0 +1,31 @@
+@import "../../../shared/styles/breakpoints.scss";
+
+.filter__auto-update {
+  margin: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filter__inputs {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  column-gap: 60px;
+
+  home-competition-picker,
+  home-date-picker {
+    flex-grow: 1;
+  }
+}
+
+.filter__search-button-container {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+
+  @include sm-max {
+    button {
+      width: 100%;
+    }
+  }
+}
