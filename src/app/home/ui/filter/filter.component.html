@@ -11,9 +11,8 @@
   ></home-date-picker>
 </div>
 
-<div class="filter__search-button-container">
+<div *ngIf="!autoUpdate" class="filter__search-button-container">
   <button
-    *ngIf="!autoUpdate"
     mat-flat-button
     (click)="updateData()"
     color="primary"
