@@ -23,7 +23,12 @@ export class MatchTableComponent implements OnChanges {
   matches?: Match[];
   unsortedMatches?: Match[];
   loadingData: boolean = false;
-  noDataError: boolean = false;
+  error?: {
+    text: string;
+    type: string;
+    title?: string;
+    retry?: boolean;
+  };
   showMultipleDates: boolean = false;
 
   constructor(private footballData: FootballDataService) {}
@@ -35,21 +40,44 @@ export class MatchTableComponent implements OnChanges {
   }
 
   updateData(): void {
-    this.noDataError = false;
+    if (!this.competition || !this.matchday) {
+      this.setError('No Data provided', 'error');
+      return;
+    }
+    this.clearError();
     this.loadingData = true;
     this.footballData
       .getMatches(this.competition.id, this.matchday.start, this.matchday.end)
-      .subscribe((data) => {
-        if (data.matches.length > 0) {
-          this.matches = data.matches;
-          this.unsortedMatches = data.matches;
-          this.showMultipleDates =
-            dateDifference(this.matchday.start, this.matchday.end, 'days') > 0;
-        } else {
+      .subscribe({
+        next: (data) => {
+          if (data.matches.length > 0) {
+            this.matches = data.matches;
+            this.unsortedMatches = data.matches;
+            this.showMultipleDates =
+              dateDifference(this.matchday.start, this.matchday.end, 'days') >
+              0;
+          } else {
+            this.matches = undefined;
+            this.setError(
+              `No data for ${
+                this.competition.name
+              } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
+              'info',
+              "No data found"
+            );
+          }
+          this.loadingData = false;
+        },
+        error: (error) => {
           this.matches = undefined;
-          this.noDataError = true;
-        }
-        this.loadingData = false;
+          this.loadingData = false;
+          this.setError(
+            error.error.message,
+            'error',
+            `${error.statusText} - ${error.status}`,
+            error.status === 429
+          );
+        },
       });
   }
 
@@ -91,7 +119,8 @@ export class MatchTableComponent implements OnChanges {
         hour: '2-digit',
         minute: '2-digit',
         day: '2-digit',
-        month: 'short',
+        month: '2-digit',
+        hour12: false,
       });
     } else {
       return date.toLocaleTimeString([], {
@@ -99,5 +128,18 @@ export class MatchTableComponent implements OnChanges {
         minute: '2-digit',
       });
     }
+  }
+
+  setError(
+    text: string,
+    type: string,
+    title: string = 'warning',
+    retry: boolean = false
+  ) {
+    this.error = { text, type, title, retry };
+  }
+
+  clearError() {
+    this.error = undefined;
   }
 }
