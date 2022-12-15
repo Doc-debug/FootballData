@@ -2,6 +2,11 @@ export function stringToDate(value: string): Date {
   return new Date(value);
 }
 
+export function isValidDateRange(start?: Date | null, end?: Date | null) {
+  if (!start || !end) return false;
+  return end.getTime() - start.getTime() >= 0;
+}
+
 export function toISODateString(date: Date): string {
   const day = date.getDate().toString().padStart(2, '0');
   const month = date.getMonth().toString().padStart(2, '0');

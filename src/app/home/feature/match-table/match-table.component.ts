@@ -8,6 +8,7 @@ import {
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
 import { stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
+import { DateRange } from '../date-picker/date-picker.model';
 
 @Component({
   selector: 'home-match-table',
@@ -15,7 +16,7 @@ import { compare, isAnyNull } from '../../../shared/utils/validators';
   styleUrls: ['./match-table.component.scss'],
 })
 export class MatchTableComponent implements OnChanges {
-  @Input() matchday: Date;
+  @Input() matchday: DateRange;
   @Input() competition: Competition;
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
   matches?: Match[];
@@ -36,7 +37,7 @@ export class MatchTableComponent implements OnChanges {
   updateData(): void {
     this.noDataError = false;
     this.footballData
-      .getMatches(this.matchday, this.competition.id)
+      .getMatches(this.competition.id, this.matchday.start, this.matchday.end)
       .subscribe((data) => {
         if (data.matches.length > 0) {
           this.matches = data.matches;

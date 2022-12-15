@@ -26,14 +26,17 @@ export class FootballDataService {
     });
   }
 
-  getMatches(matchday: Date, competitions: number): Observable<MatchData> {
+  getMatches(
+    competitions: number,
+    dateFrom: Date,
+    dateTo?: Date
+  ): Observable<MatchData> {
+    if (!dateTo) dateTo = offsetDate({ days: 1 }, dateFrom);
+
     let params = new HttpParams();
     params = params.append('competitions', competitions);
-    params = params.append('dateFrom', toISODateString(matchday));
-    params = params.append(
-      'dateTo',
-      toISODateString(offsetDate({ days: 1 }, matchday))
-    );
+    params = params.append('dateFrom', toISODateString(dateFrom));
+    params = params.append('dateTo', toISODateString(dateTo));
 
     return this.http.get<MatchData>(`${this.baseUrl}/matches`, {
       headers: this.headerGenerator(),

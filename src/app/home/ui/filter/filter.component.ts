@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Competition } from '../../../shared/data-access/football-data.model';
+import { DateRange } from '../../feature/date-picker/date-picker.model';
 import { FilterData } from './filter.model';
 
 @Component({
@@ -9,10 +10,10 @@ import { FilterData } from './filter.model';
 })
 export class FilterComponent {
   @Output() onFilterDataComplete = new EventEmitter<FilterData>();
-  matchday: Date;
+  matchday: DateRange;
   competition: Competition;
 
-  updateData(data: { matchday?: Date; competition?: Competition }) {
+  updateData(data: { matchday?: DateRange; competition?: Competition }) {
     if (data.matchday) this.matchday = data.matchday;
     if (data.competition) this.competition = data.competition;
     
