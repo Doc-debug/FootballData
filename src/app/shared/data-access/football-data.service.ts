@@ -31,7 +31,11 @@ export class FootballDataService {
     dateFrom: Date,
     dateTo?: Date
   ): Observable<MatchData> {
-    if (!dateTo) dateTo = offsetDate({ days: 1 }, dateFrom);
+    if (!dateTo) {
+      dateTo = offsetDate({ days: 1 }, dateFrom);
+    } else {
+      dateTo = offsetDate({ days: 1 }, dateTo);
+    }
 
     let params = new HttpParams();
     params = params.append('competitions', competitions);
