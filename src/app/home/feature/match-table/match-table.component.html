@@ -2,8 +2,7 @@
   mat-table
   [dataSource]="matches"
   matSort
-  *ngIf="matches"
-  (matSortChange)="sortData($event)"
+  *ngIf="matches.data.length"
 >
   <!-- Position Column -->
   <ng-container matColumnDef="homeTeam">

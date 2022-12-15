@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { Sort } from '@angular/material/sort';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import {
   Competition,
   Match,
@@ -7,25 +8,30 @@ import {
 } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
 import { stringToDate } from '../../../shared/utils/timeUtils';
-import { compare, isAnyNull } from '../../../shared/utils/validators';
+import { isAnyNull } from '../../../shared/utils/validators';
 
 @Component({
   selector: 'home-match-table',
   templateUrl: './match-table.component.html',
   styleUrls: ['./match-table.component.scss'],
 })
-export class MatchTableComponent implements OnChanges {
+export class MatchTableComponent implements OnChanges, OnInit {
   @Input() matchday: Date;
   @Input() competition: Competition;
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
-  matches?: Match[];
-  unsortedMatches?: Match[];
+  matches: MatTableDataSource<Match> = new MatTableDataSource<Match>([]);
 
   noDataError: boolean = false;
 
   stringToDate = stringToDate;
 
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private footballData: FootballDataService) {}
+  
+  ngOnInit(): void {
+    this.matches.sort = this.sort;
+  }
 
   ngOnChanges(): void {
     if (this.matchday && this.competition) {
@@ -39,10 +45,9 @@ export class MatchTableComponent implements OnChanges {
       .getMatches(this.matchday, this.competition.id)
       .subscribe((data) => {
         if (data.matches.length > 0) {
-          this.matches = data.matches;
-          this.unsortedMatches = data.matches;
+          this.matches.data = data.matches;
         } else {
-          this.matches = undefined;
+          this.matches.data = [];
           this.noDataError = true;
         }
       });
@@ -53,28 +58,5 @@ export class MatchTableComponent implements OnChanges {
       return `- : -`;
     }
     return `${score.home} : ${score.away}`;
-  }
-
-  sortData(sort: Sort) {
-    const data = this.matches?.slice();
-    if (!data || !sort.active || sort.direction === '') {
-      return;
-    }
-
-    const isAsc = sort.direction === 'asc';
-    this.matches = data.sort((a, b) => {
-      switch (sort.active) {
-        case 'homeTeam':
-          return compare(a.homeTeam.name, b.homeTeam.name, isAsc);
-        case 'awayTeam':
-          return compare(a.awayTeam.name, b.awayTeam.name, isAsc);
-        case 'score':
-          return compare(a.score.fullTime.home, b.score.fullTime.home, isAsc);
-        case 'kickOff':
-          return compare(a.utcDate, b.utcDate, isAsc);
-        default:
-          return 0;
-      }
-    });
   }
 }
