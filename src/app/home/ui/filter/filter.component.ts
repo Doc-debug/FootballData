@@ -14,6 +14,10 @@ export class FilterComponent {
   competition: Competition;
   autoUpdate: boolean = false;
 
+  autoUpdateToggle() {
+    if (!this.autoUpdate) this.updateData();
+  }
+
   autoUpdateData(data: { matchday?: DateRange; competition?: Competition }) {
     if (data.matchday) this.matchday = data.matchday;
     if (data.competition) this.competition = data.competition;
