@@ -1,13 +1,17 @@
+@import "../../../shared/styles/colors.scss";
+
+.match-table tr.match-table__row:hover {
+  cursor: pointer;
+  background-color: $color-primary;
+
+  td {
+    color: white;
+  }
+}
+
 .match-table__loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
   row-gap: 1rem;
-}
-
-.match-table__error-message {
-  mat-card-header mat-icon {
-    border-radius: 0;
-    font-size: 40px;
-  }
 }

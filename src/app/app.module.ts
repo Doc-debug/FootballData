@@ -24,6 +24,8 @@ import { DatePickerComponent } from './home/feature/date-picker/date-picker.comp
 import { HomeComponent } from './home/feature/home/home.component';
 import { MatchTableComponent } from './home/feature/match-table/match-table.component';
 import { FilterComponent } from './home/ui/filter/filter.component';
+import { MatchDetailsComponent } from './match-details/feature/match-details/match-details.component';
+import { ErrorCardComponent } from './shared/ui/error-card/error-card.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { FilterComponent } from './home/ui/filter/filter.component';
     DatePickerComponent,
     FilterComponent,
     MatchTableComponent,
+    MatchDetailsComponent,
+    ErrorCardComponent,
   ],
   imports: [
     BrowserModule,

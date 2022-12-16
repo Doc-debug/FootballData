@@ -1,4 +1,8 @@
-<mat-slide-toggle class="filter__auto-update" [(ngModel)]="autoUpdate">
+<mat-slide-toggle
+  class="filter__auto-update"
+  (toggleChange)="autoUpdateToggle()"
+  [(ngModel)]="autoUpdate"
+>
   Auto update
 </mat-slide-toggle>
 

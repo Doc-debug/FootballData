@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { isValidDateRange } from '../../../shared/utils/timeUtils';
 import { DateRange } from './date-picker.model';
 
+export const matchdayStorageKey: string = 'SELECTED_MATCHDAY';
+
 @Component({
   selector: 'home-date-picker',
   templateUrl: './date-picker.component.html',

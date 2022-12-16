@@ -4,6 +4,8 @@ import { map, Observable, of, startWith } from 'rxjs';
 import { Competition } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
 
+export const competitionStorageKey: string = 'SELECTED_COMPETITION';
+
 @Component({
   selector: 'home-competition-picker',
   templateUrl: './competition-picker.component.html',
@@ -19,6 +21,10 @@ export class CompetitionPickerComponent implements OnInit {
   constructor(private footballData: FootballDataService) {}
 
   ngOnInit(): void {
+    this.updateData();
+  }
+
+  updateData() {
     this.footballData.getCompetitions().subscribe((data) => {
       this.competitions = data.competitions;
       this.filteredCompetitions = this.competitionForm.valueChanges.pipe(
@@ -27,6 +33,7 @@ export class CompetitionPickerComponent implements OnInit {
       );
     });
   }
+
   private _filter(value: string): Competition[] {
     const filterValue = value.toLowerCase();
 

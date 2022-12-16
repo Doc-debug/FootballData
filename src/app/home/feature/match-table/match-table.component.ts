@@ -1,14 +1,27 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import {
   Competition,
   Match,
   Score,
 } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
+import {
+  createError,
+  createErrorFromHttp,
+  ErrorObject,
+} from '../../../shared/ui/error-card/error-card.model';
+import {
+  getSessionStorage,
+  removeSessionStorageKey,
+  setSessionStorage,
+} from '../../../shared/utils/storage';
 import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
+import { competitionStorageKey } from '../competition-picker/competition-picker.component';
+import { matchdayStorageKey } from '../date-picker/date-picker.component';
 import { DateRange } from '../date-picker/date-picker.model';
 
 @Component({
@@ -16,7 +29,7 @@ import { DateRange } from '../date-picker/date-picker.model';
   templateUrl: './match-table.component.html',
   styleUrls: ['./match-table.component.scss'],
 })
-export class MatchTableComponent implements OnChanges {
+export class MatchTableComponent implements OnChanges, OnInit {
   @Input() matchday: DateRange;
   @Input() competition: Competition;
 
@@ -24,15 +37,16 @@ export class MatchTableComponent implements OnChanges {
   matches?: Match[];
   unsortedMatches?: Match[];
   loadingData: boolean = false;
-  error?: {
-    text: string;
-    type: string;
-    title?: string;
-    retry?: boolean;
-  };
+  error?: ErrorObject;
   showMultipleDates: boolean = false;
 
-  constructor(private footballData: FootballDataService) {}
+  constructor(
+    private footballData: FootballDataService,
+    private router: Router
+  ) {}
+  ngOnInit(): void {
+    this.getDataFromSessionStorage();
+  }
 
   ngOnChanges(): void {
     if (this.matchday && this.competition) {
@@ -42,9 +56,10 @@ export class MatchTableComponent implements OnChanges {
 
   updateData(): void {
     if (!this.competition || !this.matchday) {
-      this.setError('No Data provided', 'error');
+      this.error = createError('No Data provided', 'error');
       return;
     }
+    this.updateDataInSessionStorage();
     this.clearError();
     this.loadingData = true;
     this.footballData
@@ -59,14 +74,16 @@ export class MatchTableComponent implements OnChanges {
               0;
           } else {
             this.matches = undefined;
-            this.setErrorNoData();
+            this.error = this.createErrorNoData();
+            this.clearSessionStorage();
           }
           this.loadingData = false;
         },
         error: (error: HttpErrorResponse) => {
           this.matches = undefined;
           this.loadingData = false;
-          this.setErrorWithObj(error);
+          this.error = createErrorFromHttp(error);
+          this.clearSessionStorage();
         },
       });
   }
@@ -120,35 +137,43 @@ export class MatchTableComponent implements OnChanges {
     }
   }
 
-  setError(
-    text: string,
-    type: string,
-    title: string = 'warning',
-    retry: boolean = false
-  ) {
-    this.error = { text, type, title, retry };
-  }
-
-  setErrorWithObj(error: HttpErrorResponse) {
-    this.setError(
-      error.error.message,
-      'error',
-      `${error.statusText} - ${error.status}`,
-      error.status === 429
-    );
-  }
-
-  setErrorNoData() {
-    this.setError(
-      `No data for ${
-        this.competition.name
-      } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
-      'info',
-      'No data found'
-    );
-  }
-
   clearError() {
     this.error = undefined;
+  }
+
+  createErrorNoData() {
+    return {
+      text: `No data for ${
+        this.competition.name
+      } between ${this.matchday.start.toLocaleDateString()} and ${this.matchday.end.toLocaleDateString()}`,
+      type: 'info',
+      title: 'No data found',
+    };
+  }
+
+  navigateTo(match: Match) {
+    this.router.navigate(['/match/' + match.id]);
+  }
+
+  updateDataInSessionStorage() {
+    setSessionStorage(matchdayStorageKey, this.matchday);
+    setSessionStorage(competitionStorageKey, this.competition);
+  }
+  clearSessionStorage() {
+    removeSessionStorageKey(matchdayStorageKey);
+    removeSessionStorageKey(competitionStorageKey);
+  }
+  getDataFromSessionStorage() {
+    const matchday = getSessionStorage(matchdayStorageKey) as DateRange;
+    const competition = getSessionStorage(competitionStorageKey) as Competition;
+
+    if (matchday && competition) {
+      this.matchday = {
+        start: new Date(matchday.start),
+        end: new Date(matchday.end),
+      };
+      this.competition = competition;
+      this.updateData();
+    }
   }
 }

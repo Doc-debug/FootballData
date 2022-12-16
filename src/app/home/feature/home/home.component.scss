@@ -1,16 +1,11 @@
 @import "../../../shared/styles/breakpoints.scss";
 
-.main-content {
-  margin: 2rem auto;
-  @include md-min {
-    width: 50em;
-  }
-  @include md-max {
-    width: 90%;
-  }
+home-filter {
+  display: block;
+  padding-bottom: 2rem;
+}
 
-  home-filter {
-    display: block;
-    padding-bottom: 2rem;
-  }
+home-match-table {
+  overflow: auto;
+  display: block;
 }

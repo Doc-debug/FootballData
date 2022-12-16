@@ -1,0 +1,61 @@
+<div *ngIf="matchData">
+  <div class="match-data__header">
+    <button (click)="goBack()" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <p class="match-data__header__status">{{ getStatus() }}</p>
+    <div class="match-data__header__spacer"></div>
+  </div>
+  <div class="match-data__score">
+    <img
+      [src]="matchData.homeTeam.crest"
+      [alt]="matchData.homeTeam.name + ' crest'"
+    />
+    <h1>
+      {{ matchData.score.fullTime.home }} - {{ matchData.score.fullTime.away }}
+    </h1>
+    <img
+      [src]="matchData.awayTeam.crest"
+      [alt]="matchData.awayTeam.name + ' crest'"
+    />
+  </div>
+  <div class="match-data__teams">
+    <mat-card [ngClass]="isWinner('home') ? 'winner' : ''">
+      <mat-card-subtitle>
+        <p>Home</p>
+      </mat-card-subtitle>
+      <mat-card-title>
+        <h2>{{ matchData.homeTeam.name }}</h2>
+      </mat-card-title>
+    </mat-card>
+    <mat-card [ngClass]="isWinner('away') ? 'winner' : ''">
+      <mat-card-subtitle>
+        <p>away</p>
+      </mat-card-subtitle>
+      <mat-card-title>
+        <h2>{{ matchData.awayTeam.name }}</h2>
+      </mat-card-title>
+    </mat-card>
+  </div>
+
+  <mat-card class="match-card__competition-details">
+    <mat-card-header>
+      <img
+        mat-card-avatar
+        [src]="matchData.competition.emblem"
+        [alt]="matchData.competition.name + ' emblem'"
+      />
+      <mat-card-title>
+        <h2>{{ matchData.competition.name }}</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Date: {{ stringToDate(matchData.utcDate).toLocaleDateString() }}</p>
+      <p>
+        Kick-off: {{ stringToDate(matchData.utcDate).toLocaleTimeString() }}
+      </p>
+      <p>Matchday: {{ matchData.matchday }}</p>
+      <p>Area: {{ matchData.area.name }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>

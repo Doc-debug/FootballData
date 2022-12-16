@@ -1,0 +1,74 @@
+@import "../../../shared/styles/breakpoints.scss";
+@import "../../../shared/styles/colors.scss";
+
+.match-data__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .match-data__header__status {
+    text-align: center;
+    margin: 0;
+  }
+
+  .match-data__header__spacer {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.match-data__score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 20px;
+
+  h1 {
+    margin: 4rem 0;
+    text-align: center;
+    font-size: 4rem;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  @include sm-max {
+    h1 {
+      font-size: 3rem;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.match-data__teams {
+  display: flex;
+  justify-content: center;
+  column-gap: 30px;
+
+  @include sm-max {
+    flex-wrap: wrap;
+  }
+
+  mat-card {
+    text-align: center;
+    flex-grow: 1;
+    width: 100%;
+
+    &.winner {
+      background-color: $color-primary;
+      p,
+      h2 {
+        color: white;
+      }
+    }
+  }
+}
+
+.match-card__competition-details {
+  margin-top: 30px;
+}
