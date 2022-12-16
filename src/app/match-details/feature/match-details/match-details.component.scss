@@ -1,9 +1,5 @@
-@use '@angular/material' as mat;
-
 @import "../../../shared/styles/breakpoints.scss";
-
-$palette: mat.define-palette(mat.$pink-palette);
-
+@import "../../../shared/styles/colors.scss";
 
 .match-data__header {
   display: flex;
@@ -64,7 +60,11 @@ $palette: mat.define-palette(mat.$pink-palette);
     width: 100%;
 
     &.winner {
-      background-color: mat.get-color-from-palette($palette, 700);
+      background-color: $color-primary;
+      p,
+      h2 {
+        color: white;
+      }
     }
   }
 }

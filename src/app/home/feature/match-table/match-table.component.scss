@@ -1,10 +1,12 @@
-@use '@angular/material' as mat;
-
-$palette: mat.define-palette(mat.$pink-palette);
+@import "../../../shared/styles/colors.scss";
 
 .match-table tr.match-table__row:hover {
   cursor: pointer;
-  background-color: mat.get-color-from-palette($palette, 900);
+  background-color: $color-primary;
+
+  td {
+    color: white;
+  }
 }
 
 .match-table__loading-spinner {
@@ -13,4 +15,3 @@ $palette: mat.define-palette(mat.$pink-palette);
   align-items: center;
   row-gap: 1rem;
 }
-
