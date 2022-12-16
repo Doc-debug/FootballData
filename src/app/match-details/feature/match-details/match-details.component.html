@@ -1,6 +1,6 @@
 <div *ngIf="matchData">
   <div class="match-data__header">
-    <button routerLink="" mat-icon-button>
+    <button (click)="goBack()" mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
     </button>
     <p class="match-data__header__status">{{ getStatus() }}</p>

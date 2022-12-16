@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +20,8 @@ export class MatchDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private footballData: FootballDataService
+    private footballData: FootballDataService,
+    private _location: Location
   ) {
     this.route.params.subscribe((params) => {
       this.matchId = params['id'];
@@ -51,5 +53,9 @@ export class MatchDetailsComponent {
     } else {
       return score.home <= score.away;
     }
+  }
+
+  goBack() {
+    this._location.back();
   }
 }
