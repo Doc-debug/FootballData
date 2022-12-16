@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import {
@@ -13,6 +13,10 @@ import {
   createErrorFromHttp,
   ErrorObject,
 } from '../../../shared/ui/error-card/error-card.model';
+import {
+  getSessionStorage,
+  setSessionStorage,
+} from '../../../shared/utils/storage';
 import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
 import { DateRange } from '../date-picker/date-picker.model';
@@ -22,9 +26,12 @@ import { DateRange } from '../date-picker/date-picker.model';
   templateUrl: './match-table.component.html',
   styleUrls: ['./match-table.component.scss'],
 })
-export class MatchTableComponent implements OnChanges {
+export class MatchTableComponent implements OnChanges, OnInit {
   @Input() matchday: DateRange;
   @Input() competition: Competition;
+
+  matchdayStorageKey: string = 'SELECTED_MATCHDAY';
+  competitionStorageKey: string = 'SELECTED_COMPETITION';
 
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
   matches?: Match[];
@@ -37,6 +44,9 @@ export class MatchTableComponent implements OnChanges {
     private footballData: FootballDataService,
     private router: Router
   ) {}
+  ngOnInit(): void {
+    this.getDataFromSessionStorage();
+  }
 
   ngOnChanges(): void {
     if (this.matchday && this.competition) {
@@ -49,6 +59,7 @@ export class MatchTableComponent implements OnChanges {
       this.error = createError('No Data provided', 'error');
       return;
     }
+    this.updateDataInSessionStorage();
     this.clearError();
     this.loadingData = true;
     this.footballData
@@ -140,5 +151,25 @@ export class MatchTableComponent implements OnChanges {
 
   navigateTo(match: Match) {
     this.router.navigate(['/match/' + match.id]);
+  }
+
+  updateDataInSessionStorage() {
+    setSessionStorage(this.matchdayStorageKey, this.matchday);
+    setSessionStorage(this.competitionStorageKey, this.competition);
+  }
+  getDataFromSessionStorage() {
+    const matchday = getSessionStorage(this.matchdayStorageKey) as DateRange;
+    const competition = getSessionStorage(
+      this.competitionStorageKey
+    ) as Competition;
+
+    if (matchday && competition) {
+      this.matchday = {
+        start: new Date(matchday.start),
+        end: new Date(matchday.end),
+      };
+      this.competition = competition;
+      this.updateData();
+    }
   }
 }
