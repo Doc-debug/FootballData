@@ -15,6 +15,7 @@ import {
 } from '../../../shared/ui/error-card/error-card.model';
 import {
   getSessionStorage,
+  removeSessionStorageKey,
   setSessionStorage,
 } from '../../../shared/utils/storage';
 import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
@@ -74,6 +75,7 @@ export class MatchTableComponent implements OnChanges, OnInit {
           } else {
             this.matches = undefined;
             this.error = this.createErrorNoData();
+            this.clearSessionStorage();
           }
           this.loadingData = false;
         },
@@ -81,6 +83,7 @@ export class MatchTableComponent implements OnChanges, OnInit {
           this.matches = undefined;
           this.loadingData = false;
           this.error = createErrorFromHttp(error);
+          this.clearSessionStorage();
         },
       });
   }
@@ -156,11 +159,13 @@ export class MatchTableComponent implements OnChanges, OnInit {
     setSessionStorage(matchdayStorageKey, this.matchday);
     setSessionStorage(competitionStorageKey, this.competition);
   }
+  clearSessionStorage() {
+    removeSessionStorageKey(matchdayStorageKey);
+    removeSessionStorageKey(competitionStorageKey);
+  }
   getDataFromSessionStorage() {
     const matchday = getSessionStorage(matchdayStorageKey) as DateRange;
-    const competition = getSessionStorage(
-      competitionStorageKey
-    ) as Competition;
+    const competition = getSessionStorage(competitionStorageKey) as Competition;
 
     if (matchday && competition) {
       this.matchday = {
