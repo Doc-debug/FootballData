@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +27,7 @@ import { MatchTableComponent } from './home/feature/match-table/match-table.comp
 import { FilterComponent } from './home/ui/filter/filter.component';
 import { MatchDetailsComponent } from './match-details/feature/match-details/match-details.component';
 import { ErrorCardComponent } from './shared/ui/error-card/error-card.component';
+import { TeamDetailsComponent } from './team-details/feature/team-details/team-details.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { ErrorCardComponent } from './shared/ui/error-card/error-card.component'
     MatchTableComponent,
     MatchDetailsComponent,
     ErrorCardComponent,
+    TeamDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { ErrorCardComponent } from './shared/ui/error-card/error-card.component'
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatExpansionModule,
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { offsetDate, toISODateString } from '../utils/timeUtils';
 import { CompetitionData, Match, MatchData } from './football-data.model';
+import { Team } from './team-data.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,12 @@ export class FootballDataService {
 
   getCompetitions(): Observable<CompetitionData> {
     return this.http.get<CompetitionData>(`${this.baseUrl}/competitions/`, {
+      headers: this.headerGenerator(),
+    });
+  }
+
+  getTeam(id: string | number) {
+    return this.http.get<Team>(`${this.baseUrl}/teams/${id}`, {
       headers: this.headerGenerator(),
     });
   }

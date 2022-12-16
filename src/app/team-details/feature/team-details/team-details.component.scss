@@ -1,0 +1,21 @@
+.team-details__emblem {
+  margin: auto;
+  display: block;
+}
+
+.team-details__container {
+  margin-top: 10px;
+  mat-expansion-panel {
+    margin-bottom: 1rem;
+  }
+}
+
+.team-details__running-competitions p {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+
+  img {
+    width: 40px;
+  }
+}

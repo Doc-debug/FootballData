@@ -65,8 +65,8 @@ export interface Match {
   stage: string;
   group: string;
   lastUpdated: string;
-  homeTeam: Team;
-  awayTeam: Team;
+  homeTeam: MatchTeam;
+  awayTeam: MatchTeam;
   score: ScoreData;
   goals: Goal[];
   penalties: any[];
@@ -76,7 +76,7 @@ export interface Match {
   referees: Coach[];
 }
 
-export interface Team {
+export interface MatchTeam {
   id: number;
   name: string;
   shortName: string;

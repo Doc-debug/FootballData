@@ -1,0 +1,55 @@
+<button (click)="goBack()" mat-icon-button>
+  <mat-icon>arrow_back</mat-icon>
+</button>
+<div *ngIf="teamData">
+  <img [src]="teamData.crest" class="team-details__emblem" />
+  <mat-card class="team-details__container">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>{{ teamData.name }} ({{ teamData.founded }})</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p *ngIf="teamData.founded">Founded: {{ teamData.founded }}</p>
+      <p *ngIf="teamData.venue">Venue: {{ teamData.venue }}</p>
+      <p *ngIf="teamData.address">Address: {{ teamData.address }}</p>
+      <p *ngIf="teamData.website">
+        Homepage:
+        <a [href]="teamData.website" target="_blank">{{ teamData.website }}</a>
+      </p>
+
+      <mat-expansion-panel
+        *ngIf="teamData.runningCompetitions.length"
+        class="team-details__running-competitions"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Competitions</mat-panel-title>
+          <mat-panel-description>
+            currently running competitions:
+            {{ teamData.runningCompetitions.length }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p *ngFor="let competition of teamData.runningCompetitions">
+          <img [src]="competition.emblem" alt="competition emblem" matPrefix />
+          {{ competition.name }} ({{ competition.code }})
+        </p>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        *ngIf="teamData.squad.length"
+        class="team-details__team-members"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Team members</mat-panel-title>
+          <mat-panel-description>
+            total members:
+            {{ teamData.squad.length }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p *ngFor="let member of teamData.squad">
+          {{ member.name }} ({{ member.position }})
+        </p>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+</div>

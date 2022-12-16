@@ -20,7 +20,10 @@
     />
   </div>
   <div class="match-data__teams">
-    <mat-card [ngClass]="isWinner('home') ? 'winner' : ''">
+    <mat-card
+      [ngClass]="isWinner('home') ? 'winner' : ''"
+      [routerLink]="'/team/' + matchData.homeTeam.id"
+    >
       <mat-card-subtitle>
         <p>Home</p>
       </mat-card-subtitle>
@@ -28,7 +31,10 @@
         <h2>{{ matchData.homeTeam.name }}</h2>
       </mat-card-title>
     </mat-card>
-    <mat-card [ngClass]="isWinner('away') ? 'winner' : ''">
+    <mat-card
+      [ngClass]="isWinner('away') ? 'winner' : ''"
+      [routerLink]="'/team/' + matchData.awayTeam.id"
+    >
       <mat-card-subtitle>
         <p>away</p>
       </mat-card-subtitle>

@@ -1,3 +1,5 @@
+@use "@angular/material" as mat;
+
 @import "../../../shared/styles/breakpoints.scss";
 @import "../../../shared/styles/colors.scss";
 
@@ -58,13 +60,18 @@
     text-align: center;
     flex-grow: 1;
     width: 100%;
-
+    cursor: pointer;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
     &.winner {
       background-color: $color-primary;
       p,
       h2 {
         color: white;
       }
+    }
+
+    &:hover {
+      @include mat.elevation(5);
     }
   }
 }
