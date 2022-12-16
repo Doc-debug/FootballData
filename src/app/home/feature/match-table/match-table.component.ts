@@ -19,6 +19,8 @@ import {
 } from '../../../shared/utils/storage';
 import { dateDifference, stringToDate } from '../../../shared/utils/timeUtils';
 import { compare, isAnyNull } from '../../../shared/utils/validators';
+import { competitionStorageKey } from '../competition-picker/competition-picker.component';
+import { matchdayStorageKey } from '../date-picker/date-picker.component';
 import { DateRange } from '../date-picker/date-picker.model';
 
 @Component({
@@ -29,9 +31,6 @@ import { DateRange } from '../date-picker/date-picker.model';
 export class MatchTableComponent implements OnChanges, OnInit {
   @Input() matchday: DateRange;
   @Input() competition: Competition;
-
-  matchdayStorageKey: string = 'SELECTED_MATCHDAY';
-  competitionStorageKey: string = 'SELECTED_COMPETITION';
 
   displayedColumns: string[] = ['homeTeam', 'awayTeam', 'score', 'kickOff'];
   matches?: Match[];
@@ -154,13 +153,13 @@ export class MatchTableComponent implements OnChanges, OnInit {
   }
 
   updateDataInSessionStorage() {
-    setSessionStorage(this.matchdayStorageKey, this.matchday);
-    setSessionStorage(this.competitionStorageKey, this.competition);
+    setSessionStorage(matchdayStorageKey, this.matchday);
+    setSessionStorage(competitionStorageKey, this.competition);
   }
   getDataFromSessionStorage() {
-    const matchday = getSessionStorage(this.matchdayStorageKey) as DateRange;
+    const matchday = getSessionStorage(matchdayStorageKey) as DateRange;
     const competition = getSessionStorage(
-      this.competitionStorageKey
+      competitionStorageKey
     ) as Competition;
 
     if (matchday && competition) {
