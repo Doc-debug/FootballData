@@ -25,7 +25,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Competitions</mat-panel-title>
           <mat-panel-description>
-            currently running competitions:
+            total:
             {{ teamData.runningCompetitions.length }}
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -53,5 +53,7 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<app-loading-spinner [loading]="loading"></app-loading-spinner>
 
 <app-error-card [error]="error" (retry)="updateData()"></app-error-card>

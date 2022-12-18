@@ -18,6 +18,7 @@ export class TeamDetailsComponent {
   error?: ErrorObject;
   teamId?: string;
   teamData?: Team;
+  loading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,18 +32,22 @@ export class TeamDetailsComponent {
   }
 
   updateData() {
+    this.loading = true;
     this.clearError();
     if (!this.teamId) {
       this.error = this.createErrorNoDataGiven();
+      this.loading = false;
       return;
     }
 
     this.footballData.getTeam(this.teamId).subscribe({
       next: (data) => {
         this.teamData = data;
+        this.loading = false;
       },
       error: (error: HttpErrorResponse) => {
         this.error = createErrorFromHttp(error);
+        this.loading = false;
       },
     });
   }

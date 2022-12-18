@@ -28,6 +28,7 @@ import { FilterComponent } from './home/ui/filter/filter.component';
 import { MatchDetailsComponent } from './match-details/feature/match-details/match-details.component';
 import { ErrorCardComponent } from './shared/ui/error-card/error-card.component';
 import { TeamDetailsComponent } from './team-details/feature/team-details/team-details.component';
+import { LoadingSpinnerComponent } from './shared/ui/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { TeamDetailsComponent } from './team-details/feature/team-details/team-d
     MatchDetailsComponent,
     ErrorCardComponent,
     TeamDetailsComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

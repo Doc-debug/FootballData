@@ -58,9 +58,6 @@
   ></tr>
 </table>
 
-<div class="match-table__loading-spinner" *ngIf="loadingData">
-  <mat-spinner [diameter]="50"></mat-spinner>
-  Loading Data
-</div>
+<app-loading-spinner [loading]="loadingData"></app-loading-spinner>
 
 <app-error-card (retry)="updateData()" [error]="error"></app-error-card>

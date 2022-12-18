@@ -20,6 +20,7 @@ export class MatchDetailsComponent {
   matchId?: string;
   matchData?: Match;
   matchFinished?: boolean;
+  loading: boolean = false;
 
   stringToDate = stringToDate;
 
@@ -36,8 +37,10 @@ export class MatchDetailsComponent {
 
   updateData() {
     this.clearError();
+    this.loading = true;
     if (!this.matchId) {
       this.error = this.createErrorNoDataGiven();
+      this.loading = false;
       return;
     }
 
@@ -45,9 +48,11 @@ export class MatchDetailsComponent {
       next: (data) => {
         this.matchData = data;
         this.matchFinished = data.status === 'FINISHED';
+        this.loading = false;
       },
       error: (error: HttpErrorResponse) => {
         this.error = createErrorFromHttp(error);
+        this.loading = false;
       },
     });
   }

@@ -66,6 +66,8 @@
   </mat-card>
 </div>
 
+<app-loading-spinner [loading]="loading"></app-loading-spinner>
+
 <div class="match-data__error-container">
   <button (click)="goBack()" mat-icon-button *ngIf="error">
     <mat-icon>arrow_back</mat-icon>
