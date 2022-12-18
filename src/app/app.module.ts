@@ -18,6 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CompetitionPickerComponent } from './home/feature/competition-picker/competition-picker.component';
@@ -27,8 +28,8 @@ import { MatchTableComponent } from './home/feature/match-table/match-table.comp
 import { FilterComponent } from './home/ui/filter/filter.component';
 import { MatchDetailsComponent } from './match-details/feature/match-details/match-details.component';
 import { ErrorCardComponent } from './shared/ui/error-card/error-card.component';
-import { TeamDetailsComponent } from './team-details/feature/team-details/team-details.component';
 import { LoadingSpinnerComponent } from './shared/ui/loading-spinner/loading-spinner.component';
+import { TeamDetailsComponent } from './team-details/feature/team-details/team-details.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { LoadingSpinnerComponent } from './shared/ui/loading-spinner/loading-spi
     MatProgressSpinnerModule,
     MatCardModule,
     MatExpansionModule,
+    RouterTestingModule,
   ],
   providers: [MatDatepickerModule],
   bootstrap: [AppComponent],
