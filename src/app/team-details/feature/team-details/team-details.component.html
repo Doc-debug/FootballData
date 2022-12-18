@@ -1,4 +1,4 @@
-<button (click)="goBack()" mat-icon-button>
+<button class="team-details__back-button" (click)="goBack()" mat-icon-button>
   <mat-icon>arrow_back</mat-icon>
 </button>
 <div *ngIf="teamData">
@@ -53,3 +53,5 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<app-error-card [error]="error" (retry)="updateData()"></app-error-card>

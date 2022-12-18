@@ -65,3 +65,10 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<div class="match-data__error-container">
+  <button (click)="goBack()" mat-icon-button *ngIf="error">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <app-error-card [error]="error" (retry)="updateData()"></app-error-card>
+</div>

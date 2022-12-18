@@ -4,6 +4,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Match } from '../../../shared/data-access/football-data.model';
 import { FootballDataService } from '../../../shared/data-access/football-data.service';
+import {
+  createErrorFromHttp,
+  ErrorObject,
+} from '../../../shared/ui/error-card/error-card.model';
 import { stringToDate } from '../../../shared/utils/timeUtils';
 
 @Component({
@@ -12,6 +16,7 @@ import { stringToDate } from '../../../shared/utils/timeUtils';
   styleUrls: ['./match-details.component.scss'],
 })
 export class MatchDetailsComponent {
+  error?: ErrorObject;
   matchId?: string;
   matchData?: Match;
   matchFinished?: boolean;
@@ -30,22 +35,28 @@ export class MatchDetailsComponent {
   }
 
   updateData() {
-    if (!this.matchId) return;
+    this.clearError();
+    if (!this.matchId) {
+      this.error = this.createErrorNoDataGiven();
+      return;
+    }
 
     this.footballData.getMatch(this.matchId).subscribe({
       next: (data) => {
         this.matchData = data;
         this.matchFinished = data.status === 'FINISHED';
       },
-      error: (error: HttpErrorResponse) => {},
+      error: (error: HttpErrorResponse) => {
+        this.error = createErrorFromHttp(error);
+      },
     });
   }
 
-  getStatus() {
+  getStatus(): string {
     return this.matchFinished ? 'Finished' : this.matchData?.minute + "'";
   }
 
-  isWinner(team: 'home' | 'away') {
+  isWinner(team: 'home' | 'away'): boolean {
     if (!this.matchData || !this.matchFinished) return false;
     const score = this.matchData.score.fullTime;
     if (team === 'home') {
@@ -57,5 +68,17 @@ export class MatchDetailsComponent {
 
   goBack() {
     this._location.back();
+  }
+
+  clearError() {
+    this.error = undefined;
+  }
+
+  createErrorNoDataGiven(): ErrorObject {
+    return {
+      text: `No match ID provided`,
+      type: 'info',
+      title: 'No data provided',
+    };
   }
 }
